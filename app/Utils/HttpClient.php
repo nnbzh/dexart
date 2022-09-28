@@ -34,7 +34,7 @@ class HttpClient
         $code     = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $this->handleErrors($curl);
 
-        return [json_decode($response, true), $code];
+        return json_decode($response, true);
     }
 
     public function post(string $uri, array $params = [], $headers = []): mixed
@@ -50,7 +50,7 @@ class HttpClient
         $code     = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $this->handleErrors($curl);
 
-        return [json_decode($response, true), $code];
+        return json_decode($response, true);
     }
 
     private function buildQuery(array $params = []): string

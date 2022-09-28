@@ -20,4 +20,9 @@ class Request
     {
         return isset($this->data['name']);
     }
+
+    public function all()
+    {
+        return $this->data;
+    }
 }

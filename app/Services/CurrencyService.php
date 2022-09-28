@@ -2,39 +2,26 @@
 
 namespace App\Services;
 
+use App\APIs\CurrencyAPI;
+use App\APIs\TelegramAPI;
 use App\Utils\HttpClient;
 
 class CurrencyService
 {
-    public const BASE_CURRENCY = 'RUB';
-
-    private string $secret;
-
-    private HttpClient $client;
+    private CurrencyAPI $currencyApi;
+    private TelegramAPI $telegramApi;
 
     public function __construct()
     {
-        $this->secret = $_ENV['CURRENCY_API_SECRET'];
-        $this->client = new HttpClient(
-            $_ENV['CURRENCY_API_URL'],
-            [
-                'Content-Type'  => 'text/plain',
-                'apikey'        => $this->secret
-            ]
-        );
+        $this->currencyApi = new CurrencyAPI;
+        $this->telegramApi = new TelegramAPI;
     }
 
-    public function getRateToRub($cur)
+    public function getCurrencyRate(string $currency)
     {
-        [$response, $code] = $this->client->get('exchangerates_data/latest', [
-            'base'      => self::BASE_CURRENCY,
-            'symbols'   => $cur
-        ]);
+        $rate = $this->currencyApi->getRateToRub($currency);
+        $this->telegramApi->sendMessage("Курс тенге к 1 рублю на ".strtotime(date('d.m.Y')). " составил:$rate");
 
-        if (! (isset($response['success']) && $response['success'])) {
-            response($response, $code);
-        }
-
-        return $response;
+        return [];
     }
 }

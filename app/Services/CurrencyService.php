@@ -20,7 +20,10 @@ class CurrencyService
     public function getCurrencyRate(string $currency)
     {
         $rate = $this->currencyApi->getRateToRub($currency);
-        $this->telegramApi->sendMessage("Курс тенге к 1 рублю на ".strtotime(date('d.m.Y')). " составил:$rate");
+        $this->telegramApi->sendMessage(
+            "Курс $currency к 1 ".CurrencyAPI::BASE_CURRENCY." на "
+            .date('d.m.Y', strtotime(date('d.m.Y'))).
+            " составил:$rate");
 
         return [];
     }

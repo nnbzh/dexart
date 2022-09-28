@@ -18,9 +18,9 @@ class TelegramAPI
         );
     }
 
-    public function sendMessage(string $text)
+    public function sendMessage(string $text): void
     {
-        $response = $this->client->post("bot$this->secret/sendMessage", [
+        $response = $this->client->get("bot$this->secret/sendMessage", [
             'chat_id'       => $_ENV['TELEGRAM_CHAT_ID'],
             'parse_mode'    => 'HTML',
             'text'          => '<pre>'.$text .'</pre>'
@@ -29,8 +29,5 @@ class TelegramAPI
         if (! (isset($response['success']) && $response['success'])) {
             response($response, 500);
         }
-
-        return $response['rates'][$cur];
-
     }
 }

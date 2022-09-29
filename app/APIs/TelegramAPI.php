@@ -26,7 +26,7 @@ class TelegramAPI
             'text'          => '<pre>'.$text .'</pre>'
         ]);
 
-        if (! (isset($response['success']) && $response['success'])) {
+        if (! (isset($response['ok']) && $response['ok'])) {
             response($response, 500);
         }
     }

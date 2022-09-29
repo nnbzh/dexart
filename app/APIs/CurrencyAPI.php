@@ -8,18 +8,15 @@ class CurrencyAPI
 {
     public const BASE_CURRENCY = 'RUB';
 
-    private string $secret;
-
     private HttpClient $client;
 
     public function __construct()
     {
-        $this->secret = $_ENV['CURRENCY_API_SECRET'];
         $this->client = new HttpClient(
             $_ENV['CURRENCY_API_URL'],
             [
                 'Content-Type'  => 'text/plain',
-                'apikey'        => $this->secret
+                'apikey'        => $_ENV['CURRENCY_API_SECRET']
             ]
         );
     }

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\DTOs\CurrencyRequestDTO;
 use App\Services\CurrencyService;
 use Core\Request;
 
@@ -13,8 +14,9 @@ class CurrencyController
             response(["message" => "Parameter 'currency' not set!"], 422);
         }
 
+        $data    = new CurrencyRequestDTO($request->currency);
         $service = new CurrencyService;
 
-        response($service->getCurrencyRate($request->currency));
+        response($service->getCurrencyRate($data));
     }
 }

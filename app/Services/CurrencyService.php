@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\APIs\CurrencyAPI;
 use App\APIs\TelegramAPI;
+use App\DTOs\CurrencyRequestDTO;
+use App\DTOs\CurrencyResponseDTO;
 use App\Utils\HttpClient;
 
 class CurrencyService
@@ -17,14 +19,14 @@ class CurrencyService
         $this->telegramApi = new TelegramAPI;
     }
 
-    public function getCurrencyRate(string $currency)
+    public function getCurrencyRate(CurrencyRequestDTO $data): CurrencyResponseDTO
     {
-        $rate = $this->currencyApi->getRateToRub($currency);
+        $rate = $this->currencyApi->getRateToRub($data->currency);
         $this->telegramApi->sendMessage(
-            "Курс $currency к 1 ".CurrencyAPI::BASE_CURRENCY." на "
+            "Курс $data->currency к 1 ".CurrencyAPI::BASE_CURRENCY." на "
             .date('d.m.Y', strtotime(date('d.m.Y'))).
             " составил:$rate");
 
-        return [];
+        return new CurrencyResponseDTO(CurrencyAPI::BASE_CURRENCY, $data->currency, $rate);
     }
 }
